@@ -121,7 +121,7 @@
 				controls = new THREE.OrbitControls( camera );
 
 				controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
-				controls.dampingFactor = 0.15;
+				controls.dampingFactor = 0.25;
 
 				controls.screenSpacePanning = false;
 
@@ -130,7 +130,7 @@
 
 				controls.maxPolarAngle = 1.2 * Math.PI / 2;
                 controls.zoomSpeed = 2.0
-                controls.rotateSpeed = 0.6
+                controls.rotateSpeed = 0.3
 
 				//controls.update() must be called after any manual changes to the camera's transform
 				camera.position.set( 3, -3, 0 );
