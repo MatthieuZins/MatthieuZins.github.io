@@ -5,27 +5,84 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<style>
-			body {
-				font-family: Monospace;
-				background-color: #000;
-				color: #fff;
-				margin: 0px;
-				overflow: hidden;
-			}
-			#info {
-				color: #fff;
-				position: absolute;
-				top: 10px;
-				width: 100%;
-				text-align: center;
-				z-index: 100;
-				display:block;
-			}
-			#info a, .button { color: #f00; font-weight: bold; text-decoration: underline; cursor: pointer }
+			 /*  body {*/
+    /*      font-family: Monospace;*/
+    /*      background-color: #000;*/
+    /*      color: #fff;*/
+    /*      margin: 0px;*/
+    /*      overflow: hidden;*/
+    /*  }*/
+    /*  #info {*/
+    /*      color: #fff;*/
+    /*      position: absolute;*/
+    /*      top: 10px;*/
+    /*      width: 100%;*/
+    /*      text-align: center;*/
+    /*      z-index: 100;*/
+    /*      display:block;*/
+    /*  }*/
+    /*  #info a, .button { color: #f00; font-weight: bold; text-decoration: underline; cursor: pointer }*/
+
+
+
+
+
+            body {
+              /* prevent white margin */
+              margin: 0;
+              
+              /* hide scrollbars */
+                overflow: hidden;
+            }
+
+            #loading-overlay {
+              position: absolute;
+              width: 100%;
+              height: 100%;
+
+              display: flex;
+              justify-content: center;
+              align-items: top;
+            }
+
+            .loading-overlay-hidden {
+              display: none !important;
+            }
+
+
+            #loading-bar {
+
+              width: 25em;
+              height: 2em;
+              border-radius: 0.2em;
+              background-color: azure ;
+              border: 0px solid grey;
+
+              display: inline-flex;
+
+            }
+
+/*            #progress {
+              background-color: #75b800;
+              height: inherit;
+              border-radius: inherit;
+
+              width: 5%;
+            }*/
+
 		</style>
 	</head>
 
 	<body>
+
+        <div id="loading-overlay">
+          <div id="loading-bar">
+              <span style="width: 100%;text-align: center; font-family: Helvetica; font-size: 25px;" id="progress"> Loading ...</span>
+          </div>
+        </div>
+
+
+                
 		<script src="js/three.min.js"></script>
 
 		<script src="js/loaders/DDSLoader.js"></script>
@@ -98,16 +155,18 @@
 				camera.lookAt( scene.position );
 				// model
 
-				var onProgress = function ( xhr ) {
+			   const progressBar = document.querySelector( '#progress' );
+                const loadingOverlay = document.querySelector( '#loading-overlay' );
+                var onProgress = function ( xhr ) {
 
-					if ( xhr.lengthComputable ) {
+                    if ( xhr.lengthComputable ) {
 
-						var percentComplete = xhr.loaded / xhr.total * 100;
-						console.log( Math.round( percentComplete, 2 ) + '% downloaded' );
+                        var percentComplete = xhr.loaded / xhr.total * 100;
+                        console.log( Math.round( percentComplete, 2 ) + '% downloaded' );
+                        //progressBar.style.width = percentComplete + '%'
+                    }
 
-					}
-
-				};
+                };
 
 				var onError = function () { };
 
@@ -126,6 +185,10 @@
 
 								//object.position.y = 0;
 								scene.add( object );
+                                loadingOverlay.classList.add( 'loading-overlay-hidden' );
+                                percentComplete = 0;
+                                //progressBar.style.width = 0;
+
 
 							}, onProgress, onError );
 
